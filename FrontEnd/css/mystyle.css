@@ -1,0 +1,56 @@
+@import url("header.css");
+@import url("navigator.css");
+@import url("footer.css");
+@import url("main.css");
+@import url("sidebar.css");
+@import url("login.css");
+
+/*RESET CSS START*/
+*{
+	padding: 0px;
+	margin: 0px;
+	box-sizing: border-box;
+}
+ul{
+	list-style-type: none;
+}
+a{
+	text-decoration: none;
+}
+/*RESET CSS END*/
+
+/*CUSTOM CSS START*/
+.left{
+	float: left;
+}
+.right{
+	float: right;
+}
+.clear{
+	clear: both;
+}
+body{
+	background-color: #ebebe0;
+	font-family: Verdana,sans-serif;
+	font-size: 15px;
+	line-height: 1.5;
+	width: 100%;
+}
+/*CUSTOM CSS END*/
+
+/*MOBILE AND TABLET START*/
+@media screen and (max-width: 900px) {
+	/*CUSTOM CLASS MOBILE START*/
+	.left, .right {
+		width: 100%;
+	}
+	/*CUSTOM CLASS MOBILE END*/
+}
+@media screen and (max-width: 600px) {
+	/*CUSTOM CLASS MOBILE START*/
+	.left, .right {
+		width: 100%;
+	}
+	/*CUSTOM CLASS MOBILE END*/
+}
+/*MOBILE AND TABLET END*/
