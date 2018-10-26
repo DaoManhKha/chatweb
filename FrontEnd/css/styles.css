@@ -40,7 +40,6 @@ body{
 }
 .header-logo{
 	display: block;
-	float: left;
 	width: 25%;
 }
 .header  a{
@@ -82,58 +81,66 @@ body{
 	width: 300px;
 }
 .tooltip {
-    position: relative;
-    display: inline-block;
-    border-bottom: 1px dotted black;
+	position: relative;
+	display: inline-block;
+	border-bottom: 1px dotted black;
 }
 .tooltip .tooltiptext {
-    visibility: hidden;
-    width: 120px;
-    background-color: black;
-    color: #fff;
-    text-align: center;
-    border-radius: 6px;
-    padding: 5px 0;
-    position: absolute;
-    z-index: 1;
-    top: 115%;
-    left: 50%;
-    margin-left: -60px;
-    font-size: 10px;
+	visibility: hidden;
+	width: 120px;
+	background-color: black;
+	color: #fff;
+	text-align: center;
+	border-radius: 6px;
+	padding: 5px 0;
+	position: absolute;
+	z-index: 1;
+	top: 115%;
+	left: 50%;
+	margin-left: -60px;
+	font-size: 10px;
 }
 .tooltip .tooltiptext::after {
-    content: "";
-    position: absolute;
-    bottom: 100%;
-    left: 50%;
-    margin-left: -5px;
-    border-width: 5px;
-    border-style: solid;
-    border-color: transparent transparent black transparent;
+	content: "";
+	position: absolute;
+	bottom: 100%;
+	left: 50%;
+	margin-left: -5px;
+	border-width: 5px;
+	border-style: solid;
+	border-color: transparent transparent black transparent;
 }
 
 .tooltip:hover .tooltiptext {
-    visibility: visible;
+	visibility: visible;
 }
 
+.header-mob{
+	display: none;
+}
 /*HEADER CSS END*/
 
 /*CONTENT CSS START*/
 /*CONTENT CSS END*/
 
 /*MOBILE AND TABLET START*/
-@media screen and (max-width: 900px) {
-	/*CUSTOM CLASS MOBILE START*/
-	.left, .right {
-		width: 100%;
+@media screen and (max-width: 1000px) {
+	/*CUSTOM CLASS MOBILE START*/	
+	.header{
+		display: none;
+
+	}
+	.header-mob{
+		display: block;
+		background-color: #1a1a1a;
+		letter-spacing: 2px;
+		font-size: 17px;
+		color: #ffffff;
+	}
+
+	.menu-item{
+		display: none;
 	}
 	/*CUSTOM CLASS MOBILE END*/
 }
-@media screen and (max-width: 600px) {
-	/*CUSTOM CLASS MOBILE START*/
-	.left, .right {
-		width: 100%;
-	}
-	/*CUSTOM CLASS MOBILE END*/
-}
-/*MOBILE AND TABLET END*/
+/*MOBILE AND TABLET END
