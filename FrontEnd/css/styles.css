@@ -126,6 +126,9 @@ body{
 /*MOBILE AND TABLET START*/
 @media screen and (max-width: 1000px) {
 	/*CUSTOM CLASS MOBILE START*/	
+	.left, .right{
+		width: 100%
+	}
 	.header{
 		display: none;
 
@@ -137,9 +140,21 @@ body{
 		font-size: 17px;
 		color: #ffffff;
 	}
-
+	
+	.status{
+		float: right;
+	}
 	.menu-item{
-		display: none;
+		display: block;
+	}
+
+	.icon{
+		float: left;
+		padding: 10px;
+	}
+
+	.icon > a {
+		color: #ffffff;
 	}
 	/*CUSTOM CLASS MOBILE END*/
 }
