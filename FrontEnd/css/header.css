@@ -1,0 +1,116 @@
+/*HEADER PC CSS START*/
+.header{
+	background-color: #1a1a1a;
+	letter-spacing: 3px;
+	font-size: 17px;
+}
+.header > ul > li{
+	display: inline-block;
+}
+.header > div > a{
+	color: #ffffff;
+	padding: 16px 16px;
+	display: block;
+}
+.header > ul > li > a{
+	color: #ffffff;
+	padding: 16px 16px;
+	display: block;
+}
+.header i{
+	color: #ffffff;
+}
+/*
+.header > ul > li:hover{
+	background-color: #ffffff;
+}
+.header > ul > li:hover > a{
+	color: #000;
+}
+.header > ul > li:hover > i{
+	color: #000;
+}
+*/
+.icon-left{
+	display: none;
+}
+.icon-right{
+	display: none;
+}
+.search{
+	background-color: #4d4d4d;
+	padding: 10px 10px;
+	border-radius: 2px;
+}
+.header > ul > li > input{
+	background-color: #4d4d4d;
+	font-size: 15px;
+	color: #ffffff;
+	border: 0;
+	box-shadow: none;
+	border-radius: 0;
+	outline: none;
+	width: 300px;
+}
+#nameStatus{
+	color: #ffffff;
+}
+.myStatus{
+	padding: 16px 16px;
+	min-width: 200px;
+}
+.myStatus > p{
+	text-align: right;
+}
+.avatar{
+	position: absolute;
+	top: 12px;
+	width: 32px;
+	height: 32px;
+	border-radius: 16px 16px 0 16px;
+}
+
+li.myStatus{
+	position: relative;
+}
+li.myStatus > ul.child{
+	display: none;
+	position: absolute;
+	background-color: #ddd;
+}
+li.myStatus:hover > ul.child > li > a{
+	color: black;
+}
+li.myStatus > ul.child > li:hover > a{
+	background-color: #adad85;
+	color: black;
+}
+li.myStatus:hover > ul.child{
+	display: block;
+}
+	/*HEADER PC CSS END*/
+
+	/*HEADER MOBILE AND TABLET CSS START*/
+	@media screen and (max-width: 1024px) {
+		.header ul{
+			display: none;
+		}
+		.icon-left{
+			float: left;
+			display: block;
+		}
+		.icon-right{
+			float: right;
+			display: block;
+		}
+		.icon-right a{
+			display: inline-block;
+		}
+		.header ul li{
+			display: block;
+		}
+		.menu-right{
+			text-align: right;
+		}
+	}
+/*HEADER MOBILE AND TABLET CSS END*/
