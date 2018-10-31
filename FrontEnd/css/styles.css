@@ -54,7 +54,7 @@ body{
 	background-color: #4d4d4d;
 	padding: 7px 7px;
 	border-radius: 2px;
-	margin: 4px 0px;
+	margin: 3px 0px 0px 0px;
 }
 .status{
 	position: relative;
@@ -62,6 +62,10 @@ body{
 	text-align: right;
 	padding: 10px;
 }
+.status:hover{
+	background-color: #5b5b3e;
+}
+
 .avatar{
 	position: absolute;
 	top: 7px;
@@ -80,10 +84,14 @@ body{
 	outline: none;
 	width: 300px;
 }
+
+.tooltip > a:hover > i{
+	color: #5b5b3e;
+}
 .tooltip {
 	position: relative;
 	display: inline-block;
-	border-bottom: 1px dotted black;
+	/*border-bottom: 0px dotted black;*/
 }
 .tooltip .tooltiptext {
 	visibility: hidden;
@@ -115,6 +123,27 @@ body{
 	visibility: visible;
 }
 
+.status-child{
+	display: none;
+	position: absolute;
+	background-color: #5b5b3e;
+	top: 45px;
+	right: 0px;
+}
+
+.status-child > li:hover{
+	background-color: #ffffff;
+}
+
+.status-child > li:hover > a{
+	color: #000000;
+}
+
+.status-child > li > a{
+	padding: 10px;
+}
+
+
 .header-mob{
 	display: none;
 }
@@ -145,7 +174,23 @@ body{
 		float: right;
 	}
 	.menu-item{
-		display: block;
+		display: none;
+	}
+
+	.menu-item > li{
+		padding: 10px;
+	}
+
+	.menu-item > li > a{
+		color: #ffffff;
+	}
+	
+	.menu-item > li:hover{
+		background-color: #ffffff;
+	}
+
+	.menu-item > li:hover > a{
+		color: #000000;
 	}
 
 	.icon{
@@ -156,6 +201,7 @@ body{
 	.icon > a {
 		color: #ffffff;
 	}
+	
 	/*CUSTOM CLASS MOBILE END*/
 }
 /*MOBILE AND TABLET END

@@ -5,6 +5,7 @@
 	<title>Group 16</title>
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
 	<link rel="stylesheet" type="text/css" href="css/styles.css">
+	<script src="js/myjs.js"></script>
 </head>
 <body>
 	<!--HEADER WEB START-->
@@ -32,12 +33,17 @@
 			<span class="tooltiptext">Quản lý liên lạc</span></li>
 			<li class="tooltip"><a href="#"><i class="fas fa-info-circle"></i></a>
 			<span class="tooltiptext">Thông tin</span></li>
-			<li class="status">
+			<li class="status" id="showOption" onclick="showOption()">
 				<span><img src="https://appdata.chatwork.com/avatar/ico_default_green.png" class="avatar"></span>
 				<span id="nameStatus">ThongVu</span>
 				<i class="fas fa-sort-down"></i>
-
+				<ul class="status-child" id="status-child">
+					<li><a href="#">Cài đặt</a></li>
+					<li><a href="#">Đăng xuất</a></li>
+				</ul>
+				
 			</li>
+			
 		</ul>
 		<div class="clear"></div>
 	</div>
@@ -48,17 +54,19 @@
 		<div class="status">
 				<span><img src="https://appdata.chatwork.com/avatar/ico_default_green.png" class="avatar"></span>
 				<span id="nameStatus">ThongVu</span>
-				<i class="fas fa-sort-down"></i>
+				<!-- <i class="fas fa-sort-down"></i> -->
 		</div>
 
 		<div class="icon">
-				<a href="" id="showMenu"><i class="fa fa-bars"></i></a>
+				<a href="#" id="showMenu" onclick="showMenu()"><i class="fa fa-bars"></i></a>
 		</div>
-		<ul class="menu-item left">
+		<ul class="menu-item left" id="menu-item">
 			<li><a href="#">Quản lý công việc</a></li>
 			<li><a href="#">Quản lý tập tin</a></li>
 			<li><a href="#">Quản lý liên lạc</a></li>
 			<li><a href="#">Thông tin</a></li>
+			<li><a href="#">Cài đặt</a></li>
+			<li><a href="#">Đăng xuất</a></li>
 		</ul>
 		<div class="clear"></div>
 	</div>
