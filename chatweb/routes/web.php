@@ -14,3 +14,6 @@
 Route::get('/', function () {
     return view('chat');
 });
+Route::get('/setting', function () {
+    return view('setting');
+});

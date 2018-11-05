@@ -1,5 +1,6 @@
 @extends('base')
 
+@section('title','Chat Screen')
 @section('content')
     <div class="chat_container">
         <div class="col-sm-3 chat_sidebar">
@@ -168,7 +169,7 @@
                                 <span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu1">
-                                <li><a href="#">Action</a></li>
+                                <li><a href="/setting">Action</a></li>
                                 <li><a href="#">Profile</a></li>
                                 <li><a href="#">Logout</a></li>
                             </ul>

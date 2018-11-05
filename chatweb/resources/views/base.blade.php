@@ -22,6 +22,7 @@
     <!------ Include the above in your HEAD tag ---------->
 
     <script src="https://use.fontawesome.com/45e03a14ce.js"></script>
+    <script src="{{ URL::asset('js/chat.js') }}"></script>
 </head>
 <body>
 <div class="main_section">
