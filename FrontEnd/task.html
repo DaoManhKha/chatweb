@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Search</title>
+	<title>Task</title>
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
 	<link rel="stylesheet" type="text/css" href="css/main.css">
 	<link rel="stylesheet" type="text/css" href="css/chat.css">
-	<link rel="stylesheet" type="text/css" href="css/search.css">
+	<link rel="stylesheet" type="text/css" href="css/task.css">
 	<script src="js/myjs.js"></script>
 </head>
 <body>
@@ -81,41 +81,67 @@
 	</div>
 	<!--HEADER MOBILE END-->
 
-	<!-- CONTENT START-->
-	<div class="searchContent">
-		<div class="titleSearch">
-			<p class="title">Từ khóa cần tìm</p>
+	<!--CONTENT START-->
+	<div class="task-content">
+		<div class="title-task">
+			Quản lý công việc
 		</div>
-		<div class="inputSearch">
-			<ul class="input">
-				<li class="search-input">
-					<i class="fas fa-search"></i>
-					<input type="text" name="" placeholder="">
-				</li>
-
+		<div class="status-task">
+			<ul>
 				<li>
-					<a href="#">Tìm kiếm</a>
+					<a href="#">Chưa hoàn thành</a>
+				</li>
+				<li>
+					<a href="#">Hoàn thành</a>
 				</li>
 			</ul>
 		</div>
-		<div class="title-Result">
-			<p>Kết quả tìm kiếm</p>
+		<div class="time-task">
+			<ul>
+				<li><a href="">Tất cả</a></li>
+				<li><a href="">Hết hạn</a></li>
+				<li><a href="">Hôm nay</a></li>
+				<li><a href="">Tuần này</a></li>
+				<li><a href="">Không kì hạn</a></li>
+				<li class="tooltip">
+					<a href=""><i class="fas fa-user"></i></a>
+					<span class="tooltiptext">Công việc của tôi</span>
+				</li>
+				<li class="tooltip">
+					<a href=""><i class="fas fa-tasks"></i></a>
+					<span class="tooltiptext">Công việc tôi đã giao</span>
+				</li>
+			</ul>
 		</div>
-		<div class="searchResult">
+
+		<div class="task-result">
 			<ul>
 				<li>
-					<a href="#">Kết quả</a>
-				</li>
-				<li>
-					<a href="#">Kết quả</a>
-				</li>
-				<li>
-					<a href="#">Kết quả</a>
+					<div class="task-name">
+						<ul>
+							<li class="left"><span>Tên công việc</span></li>
+							<li class="right"><a href="#">Mở</a></li>
+							<div class="clear"></div>
+						</ul>
+					</div>
+					<div class="task-action">
+						<ul>
+							<li class="left"><span>Thời hạn: 26/10/2018</span></li>
+							<li class="right tooltip">
+								<a href="#"><i class="fas fa-pencil-alt"></i></a>
+								<span class="tooltiptext">Chỉnh sửa công việc</span>
+							</li>
+							<li class="right tooltip">
+								<a href="#"><i class="fas fa-trash-alt"></i></i></a>
+								<span class="tooltiptext">Xóa công việc</span>
+							</li>
+							<div class="clear"></div>
+						</ul>
+					</div>
 				</li>
 			</ul>
 		</div>
 	</div>
-	<!-- CONTENT END-->
-
+	<!--CONTENT END-->
 </body>
 </html>
