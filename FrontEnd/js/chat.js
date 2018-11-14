@@ -53,3 +53,22 @@ $(window).on('keydown', function(e) {
     return false;
   }
 });
+
+
+function searchResult(){
+	var input, filter, div, ul, li, p, i;
+    input = document.getElementById("mySearch");
+    filter = input.value.toUpperCase();
+    div = document.getElementById("contacts");
+    ul = div.getElementById("myMenu");
+    li = ul.getElementsByTagName("li");
+    for (i = 0; i < li.length; i++) {
+        // p = li[i].getElementsByTagName("a")[0];
+        p = li[i].getElementsByClassName("name")[0];
+        if (p.innerHTML.toUpperCase().indexOf(filter) > -1) {
+            li[i].style.display = "";
+        } else {
+            li[i].style.display = "none";
+        }
+    }
+}

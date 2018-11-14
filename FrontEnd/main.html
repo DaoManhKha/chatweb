@@ -16,7 +16,7 @@
 	<script src="https://use.typekit.net/hoy3lrg.js"></script>
 	<script>try{Typekit.load({ async: true });}catch(e){}</script>
 	<link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css'><link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.2/css/font-awesome.min.css'>
-	<link rel="stylesheet" type="text/css" href="css/styles.css">
+	<link rel="stylesheet" type="text/css" href="css/main.css">
 	<link rel="stylesheet" type="text/css" href="css/chat.css">
 	<script src="js/myjs.js"></script>
 </head>
@@ -24,15 +24,21 @@
 	<!--HEADER WEB START-->
 	<div class="header">
 		<div class="header-logo left">
-			<a href="#">Group 16</a>
+			<a href="main.html">Group 16</a>
 		</div>
-		<ul class="left">
+		<!-- <ul class="left">
 			<li class="search">
 				<i class="fas fa-search"></i>
 				<input type="text" name="" placeholder="Tìm kiếm tên hoặc nội dung cuộc trò chuyện">
 			</li>
-		</ul>
+		</ul> -->
 		<ul class="right">
+			<li class="tooltip">
+				<a href="search.html">
+					<i class="fas fa-search"></i>
+				</a>
+				<span class="tooltiptext">Tìm kiếm</span>
+			</li>
 			<li class="tooltip">
 				<a href="#">
 					<i class="far fa-calendar-check "></i>
@@ -74,6 +80,7 @@
 				<a href="#" id="showMenu" onclick="showMenu()"><i class="fa fa-bars"></i></a>
 		</div>
 		<ul class="menu-item left" id="menu-item">
+			<li><a href="search.html">Tìm kiếm</a></li>
 			<li><a href="#">Quản lý công việc</a></li>
 			<li><a href="#">Quản lý tập tin</a></li>
 			<li><a href="#">Quản lý liên lạc</a></li>
@@ -113,10 +120,10 @@
 		</div>
 		<div id="search">
 			<label for=""><i class="fa fa-search" aria-hidden="true"></i></label>
-			<input type="text" placeholder="Search contacts..." />
+			<input type="text" id="mySearch" onkeyup="searchResult()" placeholder="Search contacts..." />
 		</div>
 		<div id="contacts">
-			<ul>
+			<ul id="myMenu">
 				<li class="contact">
 					<div class="wrap">
 						<span class="contact-status online"></span>

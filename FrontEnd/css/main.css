@@ -50,12 +50,12 @@ body{
 .header > ul > li {
 	display: inline-block;
 }
-.search{
+/* .search{
 	background-color: #4d4d4d;
 	padding: 7px 7px;
 	border-radius: 2px;
 	margin: 3px 0px 0px 0px;
-}
+} */
 .status{
 	position: relative;
 	min-width: 200px;

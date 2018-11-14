@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="css/main.css">
+	<link rel="stylesheet" type="text/css" href="css/chat.css">
+	<link rel="stylesheet" type="text/css" href="css/search.css">
+	<script src="js/myjs.js"></script>
+</head>
+<body>
+	<!--HEADER WEB START-->
+	<div class="header">
+		<div class="header-logo left">
+			<a href="main.html">Group 16</a>
+		</div>
+		<!-- <ul class="left">
+			<li class="search">
+				<i class="fas fa-search"></i>
+				<input type="text" name="" placeholder="Tìm kiếm tên hoặc nội dung cuộc trò chuyện">
+			</li>
+		</ul> -->
+		<ul class="right">
+			<li class="tooltip">
+				<a href="search.html">
+					<i class="fas fa-search"></i>
+				</a>
+				<span class="tooltiptext">Tìm kiếm</span>
+			</li>
+			<li class="tooltip">
+				<a href="#">
+					<i class="far fa-calendar-check "></i>
+				</a>
+				<span class="tooltiptext">Quản lý công việc</span>
+			</li>
+
+			<li class="tooltip"><a href="#"><i class="far fa-file"></i></a>
+			<span class="tooltiptext">Quản lý tập tin</span></li>
+			<li class="tooltip"><a href="#"><i class="fas fa-user-plus"></i></a>
+			<span class="tooltiptext">Quản lý liên lạc</span></li>
+			<li class="tooltip"><a href="#"><i class="fas fa-info-circle"></i></a>
+			<span class="tooltiptext">Thông tin</span></li>
+			<li class="status" id="showOption" onclick="showOption()">
+				<span><img src="https://appdata.chatwork.com/avatar/ico_default_green.png" class="avatar"></span>
+				<span id="nameStatus">ThongVu</span>
+				<i class="fas fa-sort-down"></i>
+				<ul class="status-child" id="status-child">
+					<li><a href="#">Cài đặt</a></li>
+					<li><a href="#">Đăng xuất</a></li>
+				</ul>
+				
+			</li>
+			
+		</ul>
+		<div class="clear"></div>
+	</div>
+	<!--HEADER WEB END-->
+		
+	<!--HEADER MOBILE START-->
+	<div class="header-mob">
+		<div class="status">
+				<span><img src="https://appdata.chatwork.com/avatar/ico_default_green.png" class="avatar"></span>
+				<span id="nameStatus">ThongVu</span>
+				<!-- <i class="fas fa-sort-down"></i> -->
+		</div>
+
+		<div class="icon">
+				<a href="#" id="showMenu" onclick="showMenu()"><i class="fa fa-bars"></i></a>
+		</div>
+		<ul class="menu-item left" id="menu-item">
+			<li><a href="search.html">Tìm kiếm</a></li>
+			<li><a href="#">Quản lý công việc</a></li>
+			<li><a href="#">Quản lý tập tin</a></li>
+			<li><a href="#">Quản lý liên lạc</a></li>
+			<li><a href="#">Thông tin</a></li>
+			<li><a href="#">Cài đặt</a></li>
+			<li><a href="#">Đăng xuất</a></li>
+		</ul>
+		<div class="clear"></div>
+	</div>
+	<!--HEADER MOBILE END-->
+
+	<!-- CONTENT START-->
+	<div class="searchContent">
+		<div class="titleSearch">
+			<p class="title">Từ khóa cần tìm</p>
+		</div>
+		<div class="inputSearch">
+			<ul class="input">
+				<li class="search-input">
+					<i class="fas fa-search"></i>
+					<input type="text" name="" placeholder="">
+				</li>
+
+				<li>
+					<a href="#">Tìm kiếm</a>
+				</li>
+			</ul>
+		</div>
+		<div class="title-Result">
+			<p>Kết quả tìm kiếm</p>
+		</div>
+		<div class="searchResult">
+			<ul>
+				<li>
+					<a href="#">Kết quả</a>
+				</li>
+				<li>
+					<a href="#">Kết quả</a>
+				</li>
+				<li>
+					<a href="#">Kết quả</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<!-- CONTENT END-->
+
+</body>
+</html>
