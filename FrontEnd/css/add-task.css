@@ -1,0 +1,32 @@
+.content-task > input{
+	width: 300px;
+	height: 100px;
+	padding: 3px 5px;
+    border: 1px solid #b3b3b3;
+    font-family: Verdana,sans-serif;
+	font-size: 15px;
+}
+
+.content-task {
+	padding: 20px;
+}
+
+.time-task > div > input{
+	padding: 3px 5px;
+    border: 1px solid #b3b3b3;
+	font-family: Verdana,sans-serif;
+	font-size: 15px;
+}
+
+.time-task {
+	padding: 20px;
+}
+.time-task > div > span:hover{
+	background-color: #99ddff;
+	border-radius: 3px;
+	 border: 1px solid;
+}
+
+.time-task > div > span {
+	padding: 2px 6px;
+}

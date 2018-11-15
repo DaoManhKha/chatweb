@@ -32,13 +32,17 @@
 	background: rgba(0, 0, 0, 0.1);
 	border: 1px solid #b3b3b3;
 }
+
+.time-task > ul > li:hover{
+	background-color: #a3c2c2;
+}
 .time-task > ul > li > a{
 	color: #000;
 	padding: 5px 8px;
 }
 
 .task-result{
-	width: 40%;
+	width: 500px;
 	padding: 20px;
 }
 .task-result > ul > li{
@@ -47,6 +51,15 @@
 	background-color: #ffffff;
 	border: 1px solid #a9aaa6;
     border-radius: 3px;
+    margin-bottom: 5px;
+}
+
+.task-result > ul > li:hover{
+	background: #dcf0fa;
+}
+
+.task-result > ul > li:hover > .task-name > ul > li > a{
+	background: #c2c2a3;
 }
 
 .task-name > ul > li {
@@ -55,7 +68,8 @@
 }
 
 .task-name > ul > li > a{
-	padding: 5px;
+	border-radius: 3px;
+	padding: 4px 12px;
 	color: #000;
 	background: rgba(0, 0, 0, 0.1);
 }

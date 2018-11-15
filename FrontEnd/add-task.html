@@ -2,12 +2,26 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Search</title>
+	<title>Task</title>
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
 	<link rel="stylesheet" type="text/css" href="css/main.css">
 	<link rel="stylesheet" type="text/css" href="css/chat.css">
-	<link rel="stylesheet" type="text/css" href="css/search.css">
+	<link rel="stylesheet" type="text/css" href="css/task.css">
+	<link rel="stylesheet" type="text/css" href="css/add-task.css">
 	<script src="js/myjs.js"></script>
+	<script src="js/create-task.js"></script>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  	<link rel="stylesheet" href="/resources/demos/style.css">
+  	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  	<script>
+  	$( function() {
+    $( "#datepicker" ).datepicker();
+  	} );
+ 	</script>
+
 </head>
 <body>
 	<!--HEADER WEB START-->
@@ -81,41 +95,46 @@
 	</div>
 	<!--HEADER MOBILE END-->
 
-	<!-- CONTENT START-->
-	<div class="searchContent">
-		<div class="titleSearch">
-			<p class="title">Từ khóa cần tìm</p>
+	<!--CONTENT START-->
+	<div class="task-content">
+		<div class="title-task">
+			Quản lý công việc
 		</div>
-		<div class="inputSearch">
-			<ul class="input">
-				<li class="search-input">
-					<i class="fas fa-search"></i>
-					<input type="text" name="" placeholder="">
+		<div class="status-task">
+			<ul>
+				<li>
+					<a href="task.html">Chưa hoàn thành</a>
+				</li>
+				<li>
+					<a href="task-end.html">Hoàn thành</a>
 				</li>
 
 				<li>
-					<a href="#">Tìm kiếm</a>
-				</li>
-			</ul>
-		</div>
-		<div class="title-Result">
-			<p>Kết quả tìm kiếm</p>
-		</div>
-		<div class="searchResult">
-			<ul>
-				<li>
-					<a href="#">Kết quả</a>
-				</li>
-				<li>
-					<a href="#">Kết quả</a>
-				</li>
-				<li>
-					<a href="#">Kết quả</a>
+					<a href="add-task.html">Thêm công việc</a>
 				</li>
 			</ul>
 		</div>
 	</div>
-	<!-- CONTENT END-->
+	
+	<div class="create-task">
+		<div class="title-task">Tên công việc</div>
+		<div class="content-task">
+			<input type="text" name="" placeholder="Nội dung công việc">
+		</div>
+		<div class="do-task">
+			<span>Người thực hiện</span>
+			
+		</div>
+		<div class="time-task">
+			<span>Thời hạn:</span>
+			<div>
+				<input type="text" id="datepicker"></input>
+				<!-- <span><i class="fas fa-calendar-alt"></i></span> -->
+			</div>
+		</div>
+	</div>
+	<!--CONTENT END-->
 
+	
 </body>
 </html>
