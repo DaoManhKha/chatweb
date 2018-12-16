@@ -20,14 +20,14 @@
     </head>
     <body >
         <div id="base-url" class="d-none">{{$base_url}}</div>
-        <div id="user-list" class="d-none">{{userList}}</div>
-        <div id="room-list" class="d-none">{{roomList}}</div>
+        <div id="user-list" class="d-none">{{$userList}}</div>
+        <div id="room-list" class="d-none">{{$roomList}}</div>
 
         <div id="frame">
             <div id="sidepanel">
                 <div id="profile">
                     <div class="wrap">
-                        <img id="profile-img" src="{{URL('/images/avatar.jpg')}}" class="online" alt="" />
+                        <img id="profile-img" src="{{URL('/images/').'/'.Auth::user()->avatar}}" class="online" alt="" />
                         <p>{{Auth::user()->name}}</p>
                         <i class="fa fa-chevron-down expand-button" aria-hidden="true"></i>
                         <div id="status-options">
@@ -50,7 +50,7 @@
                 </div>
                 <div id="search">
                     <label for=""><i class="fa fa-search" aria-hidden="true"></i></label>
-                    <input type="text" placeholder="Search contacts..." />
+                    <input type="text" id="search-user" placeholder="Search contacts..." />
                 </div>
                 <div id="contacts">
                     <ul class="list-unstyled">

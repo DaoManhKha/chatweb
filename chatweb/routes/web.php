@@ -13,3 +13,5 @@
 Auth::routes();
 
 Route::get('/', 'HomeController@index')->name('home');
+Route::get('/get_list_user/{query}', 'HomeController@getUserListHtml');
+Route::get('/get_list_user', 'HomeController@getUserListHtml');
