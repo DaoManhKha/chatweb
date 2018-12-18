@@ -1,4 +1,4 @@
 <?php
 return [
-	'base_url' => url('/'),
+	'base_url' => 'http://localhost/chatweb/public/',
 ];

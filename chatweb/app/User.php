@@ -15,7 +15,7 @@ class User extends Authenticatable {
 	 * @var array
 	 */
 	protected $fillable = [
-		'name', 'email', 'password',
+		'name', 'email', 'password','chat_private_with','joined_room_ids','avatar'
 	];
 
 	/**
@@ -37,5 +37,11 @@ class User extends Authenticatable {
 				->get();
 		}
 		return $data;
+	}
+
+
+
+	public static function checkChattedBefore($idUser){
+		return in_array($idUser.'',explode(',', Auth::user()->chat_private_with));
 	}
 }
