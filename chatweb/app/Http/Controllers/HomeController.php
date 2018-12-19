@@ -72,8 +72,14 @@ class HomeController extends Controller {
 	function sendMessage(Request $rq){
 		// return json_encode('ọ');
 		$data = (array)$rq->input();
-		
+		$user = Auth::user();
+		$nam = explode(' ',$user->name);
+        $last = array_pop($nam);
+
+		$nam = explode(' ',$user->name);
+        $myLastName = array_pop($nam);
 		$roomId = 0;
+
 		$type = '';
 		$messageToSend = [];
 		$needNewRoom = false;
@@ -81,9 +87,10 @@ class HomeController extends Controller {
 		if($data['roomId']!=0 ){
 			// $roomId = Room::getPrivateRoomId($data['idUser']);
 			// $data['roomId'] = $roomId;
-			showRoom::where('room_id',$data['roomId'])->update(['last_message'=>$data['message']]);
+			showRoom::where('room_id',$data['roomId'])->update(['last_message'=>$data['message'],'last_message_sender'=>$user->name]);
 			$type = 'room';
 			$idToSend = $data['roomId'];
+			$data['idUser'] = $this->getUserInRoom($idToSend)[0]->id_member;
 		}else{
 			$needNewRoom = true;
 			$roomId = Room::createRoom($data);
@@ -93,24 +100,39 @@ class HomeController extends Controller {
 			$data['roomId'] = $roomId;
 			$type = 'user';
 			$idToSend = $data['idUser'];
-			$messageToSend = array('sender'=>Auth::user()->id,'roomId'=>$data['roomId']);
+			$messageToSend = array('sender'=>$user->id,'roomId'=>$data['roomId'],'message_alter'=>$data['message'],'sender_name'=>$user->name,'sender_avatar'=>$user->avatar);
 		}		
 		$savedMessage = Message::saveMessage($data);
 
 		if(!$needNewRoom){
 			$messageToSend = $savedMessage;
+			$messageToSend['sender_name']=$user->name;
+			$messageToSend['sender_avatar']=$user->avatar;
 		}
-		$unseenCount = Message::where('id_room',$data['roomId'])->where('status','sent')->where('id_reciver',Auth::user()->id)->count();
+		$unseenCount = Message::where('id_room',$data['roomId'])->where('status','sent')->where('id_reciver',$data['idUser'])->count();
 		$messageToSend['unseen']=$unseenCount;
+		$messageToSend['type'] = 'message';
+		$messageToSend['id_message']= $savedMessage->id;
+		$messageToSend['tempMessageId']= $data['tempMessageId'];
+		
 
 		Room::where('id',$data['roomId'])->update(['unread'=>$unseenCount]);
-		showRoom::where('room_id',$data['roomId'])->where('owner_id',Auth::user()->id)->update(['unread'=>$unseenCount]);
+
+		showRoom::where('room_id',$data['roomId'])->where('owner_id',$data['idUser'])->update(['unread'=>$unseenCount,'last_message_sender'=>$myLastName]);
+		showRoom::where('room_id',$data['roomId'])->where('owner_id',$user->id)->update(['unread'=>$unseenCount,'last_message_sender'=>'Bạn']);
 
 
 		$firebaseMessage = new Firebase($data['token'],$idToSend,$type,$messageToSend);
 		$rsl = $firebaseMessage->sendMessage();	
-		return json_encode(['roomId'=>$data['roomId'],'rssl'=>$rsl]);
-				
+		return json_encode($messageToSend);
+	}
+
+
+
+	public function test($token)
+	{
+		$nam = explode(' ','Đào Mạnh Khá');
+		return  $last = array_pop($nam);
 	}
 
 	public function subscribeTopic($token,$roomId,$type)
@@ -166,7 +188,7 @@ class HomeController extends Controller {
 		return json_encode(DB::table('show_room')->where('room_id',$id)->where('owner_id',Auth::user()->id)->get()->toArray());
 	}
 
-	public function getListMessageRoom($id,$lastIdMessage)
+	public function getListMessageRoom($id,$lastIdMessage,$mode)
 	{
 
 			$userInRoom = Room::getUserInRoom($id);
@@ -178,7 +200,7 @@ class HomeController extends Controller {
 
 			// return(json_encode($userData));
 			$messageData =  View::make('assets.messages')->with([
-				'messages'=>Message::getListMessages($id,$lastIdMessage),
+				'messages'=>Message::getListMessages($id,$lastIdMessage,$mode),
 				'users'=>$userData,
 				'curId'=>Auth::user()->id,
 			])->render();
@@ -188,14 +210,11 @@ class HomeController extends Controller {
 	}
 
 
-
-
-
-
-
-	public function test($token)
+	public function getUserInRoom($idRoom)
 	{
+		return DB::table('members_in_rooms')->where('id_room',$idRoom)->where('id_member','<>',Auth::user()->id)->get();
 	}
+
 
 
 	public function markSeenMessage($idRoom)
@@ -203,5 +222,31 @@ class HomeController extends Controller {
 		Message::where('id_room',$idRoom)->where('status','sent')->update(['status'=>'seen']);
 		Room::where('id',$idRoom)->update(['unread'=>0]);
 		showRoom::where('room_id',$idRoom)->where('owner_id',Auth::user()->id)->update(['unread'=>0]);
+
+		$firebaseMessage = new Firebase('',$idRoom,'room',array('type'=>'mark_seen','id_sender'=>Auth::user()->id));
+		$firebaseMessage->sendMessage();
+	}
+
+
+	public function pinMessage($mode,$id)
+	{
+		Message::where('id',$id)->update(['pin'=>$mode]);
+		return json_encode(['ok']);
+	}
+
+	public function getPinnedMessage($id)
+	{
+		$rawData = Message::where('id_room',$id)->where('pin',1)->get();
+		$userInRoom = Room::getUserInRoom($id);
+		foreach ($userInRoom as $us) {
+			$userData[$us->id.'t'] = $us;
+		}
+
+
+		return view('assets.messages',[
+				'messages'=>$rawData,
+				'users'=>$userData,
+				'curId'=>Auth::user()->id,
+			]);
 	}
 }

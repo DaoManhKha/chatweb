@@ -713,3 +713,25 @@ body {
   line-height: 20px;
   font-size: 13px;
 }
+
+.pin-message{
+    font-size: 15px!important;
+    margin-left: 10px;
+    margin-right: 10px;
+    padding: 5px;
+    cursor: pointer;
+    color: #bfbfbf;
+    display: none!important;
+}
+
+.pinned{
+  color: #2c3e50!important;
+  display: inline-block!important;
+}
+
+.sent:hover .pin-message{
+  display: inline-block!important;
+}
+.replies:hover .pin-message{
+  display: inline-block!important;
+}

@@ -29,14 +29,22 @@ class Message extends Model
 	}
 
 
-	public static function getListMessages($roomId,$lastIdMessage)
+	public static function getListMessages($roomId,$lastIdMessage,$mode)
 	{
 		$dataRaw = '';
 		Message::where('id_room',$roomId)->where('status','sent')->update(['status'=>'seen']);
 		if($lastIdMessage == 0){
-			$dataRaw = DB::table('messages')->where('id_room',$roomId)->orderBy('id','DESC')->latest()->take(10)->get()->reverse();
+			$dataRaw = DB::table('messages')->where('id_room',$roomId);
+			if($mode == 1){
+				$dataRaw = $dataRaw->where('pin',1);
+			}
+			$dataRaw = $dataRaw->orderBy('id','DESC')->latest()->take(10)->get()->reverse();
 		}else{
-			$dataRaw = DB::table('messages')->where('id_room',$roomId)->where('id','<',$lastIdMessage)->latest()->take(10)->get()->reverse();
+			$dataRaw = DB::table('messages')->where('id_room',$roomId)->where('id','<',$lastIdMessage);
+			if($mode == 1){
+				$dataRaw = $dataRaw->where('pin',1);
+			}
+			$dataRaw = $dataRaw->latest()->take(10)->get()->reverse();
 		}
 		return $dataRaw;
 	}

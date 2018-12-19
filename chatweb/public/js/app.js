@@ -4,6 +4,8 @@ var userToken = '';
 var chatting_room = 0;
 var chatting_user_info = {};
 var myId;
+var tempMessageId = 0;
+var isViewPinnedMess = 0;
 $(document).ready(function(){
     $("#profile-img").click(function() {
         $("#status-options").toggleClass("active");
@@ -36,6 +38,7 @@ $(".expand-button").click(function() {
 	});
 
 	$(document).on('click', '.contact', function(event) {
+        isViewPinnedMess = 0;
 		console.log('chatting user : ',chatting_user);
         $(".contact").removeClass('active');
         $(this).addClass('active');
@@ -61,7 +64,7 @@ $(".expand-button").click(function() {
         }
 
         if(!$(this).find('.unread-count').hasClass('.d-none')){
-            markSeenMessage();
+            markSeenMessageEvent();
         }
 		
 	});
@@ -100,7 +103,9 @@ function getListMessage(userId,lastIdMessage=0) {
             
                 $(".message-wraper").html('');
                 $(".message-wraper").prepend('<ul>'+data.listMessage+'</ul>');
-
+                if(lastIdMessage == 0){
+                    scroll_bottom_chat();
+                }
             // $(".content .messages").animate({ scrollTop:10}, 200);
         });
     }
@@ -148,7 +153,11 @@ function registerFirebase () {
                 }
 
                 // Nối vào tin nhắn
-                addRecivedMessages(payload.data);
+                if(payload.data.type == 'message'){
+                    addRecivedMessages(payload.data);
+                }else if(payload.data.type == 'mark_seen' && payload.data.id_sender != myId){
+                    markSeenMessageInChat();
+                }
                 
             });
 
@@ -174,16 +183,19 @@ function subscribeToTopic(token,roomId,type) {//type là chỉ 'room' hoặc 'us
 }
 
 function sendMessage(message) {
+    tempMessageId += 1;
 	var data = {
 		message:message,
 		idUser:chatting_user,
 		token:userToken,
-        roomId:chatting_room
+        roomId:chatting_room,
+        tempMessageId:tempMessageId
 	}
-    var messTemplate = `<li class="replies">
+
+    var messTemplate = `<li class="replies" id-message="temp-`+tempMessageId+`" >
                 <img src="`+$("#profile img").attr('src')+`" alt="">
                 <p>`+message+`</p>
-                <span class="meta-data text-muted">sent at `+moment().format('YYYY-MM-DD H:mm:ss')+`</span>
+                <span class="meta-data text-muted unseen">sent at `+moment().format('YYYY-MM-DD H:mm:ss')+`</span>
             </li>`;
     $(".content .messages ul").append(messTemplate);
     setTimeout(function() {
@@ -192,15 +204,26 @@ function sendMessage(message) {
     },100);
       $("#message-input").val('');
     console.log('data send message',data);
+
 	$.ajax({
 		type: "POST",
 		url: base_url+'send_message',
 		data: data,
 		dataType: 'text',
 		success: function (data) {
-			console.log(data);
-            $(".contact[id-room="+chatting_room+"]").find(".preview").html(message);
-            chatting_room = JSON.parse(data).roomId;
+            data = JSON.parse(data);
+            console.log(data);
+            $(".contact[id-room="+chatting_room+"]").find(".preview").html("<b> Bạn: </b>"+message);
+            if(data.roomId){
+                chatting_room = data.roomId;
+            }
+            
+
+            $(".replies[id-message=temp-"+data.tempMessageId+"]").attr('id-message',data.id_message).append('<i title="Ghim tin nhắn này " onclick="pinMessage(this)" class="fa fa-map-marker pin-message " aria-hidden="true"></i>');
+            if(data.roomId){
+                chatting_room = data.roomId;
+            }
+
 		}
 	});
 }
@@ -218,9 +241,12 @@ function getAllRoom() {
 function getListMessageRoom(idRoom,lastIdMessage=0,type='reset') {
     if(idRoom !=0){
         $(".loader.message-loader").css('display','block');
-        $.get( base_url+"get_list_message_room/"+idRoom+'/'+lastIdMessage, function( data ) {
+        $.get( base_url+"get_list_message_room/"+idRoom+'/'+lastIdMessage+'/'+isViewPinnedMess, function( data ) {
             data = JSON.parse(data);
             chatting_room = data.roomId;
+            if(lastIdMessage == 0 ){
+                $(".replies").remove();
+            }
             if(type == 'reset'){
                 $(".message-wraper").html('');
                 $(".message-wraper").prepend('<ul>'+data.listMessage+'</ul>');
@@ -236,15 +262,10 @@ function getListMessageRoom(idRoom,lastIdMessage=0,type='reset') {
 }
 
 function addRecivedMessages(data) {
-    var sender = '';
-        $.get( base_url+"get_info_user/"+data.id_sender, function( data ) {
-            sender = JSON.parse(data)[0];
-        });
+    var isActive = true;
     if(data.id_room == chatting_room && data.id_sender!= myId){
-        
-
-        var messTemplate = `<li class="sent">
-                <img src="`+base_url+'images/'+sender.avatar+`" alt="">
+        var messTemplate = `<li class="sent unread-message" id-message="`+data.id_message+`">
+                <img src="`+base_url+'images/'+data.sender_avatar+`" alt="">
                 <p>`+data.message+`</p>
                 <span class="meta-data text-muted unseen">sent at `+data.created_at+`</span>
             </li>`;
@@ -252,27 +273,40 @@ function addRecivedMessages(data) {
         scroll_bottom_chat();
 
         $(".content .messages").click(function() {
-            markSeenMessage();
+            markSeenMessageEvent();
         });
     }
-
-    if(data.id_sender != myId){
+    // console.log(data);
+    // console.log('data.id_sender',data.id_sender,typeof data.id_sender);
+    // console.log('myId',myId,typeof myId);
+    var room = $("#room-"+data.id_room);
+    if(data.roomId && data.sender != myId){
         var roomTemplate = `
-                <li class="contact" id-room="`+data.id_room+`" id="room-`+data.id_room+`">
+                <li class="contact " id-room="`+data.roomId+`" id="room-`+data.roomId+`">
                     <div class="wrap">
                         <span class="contact-status online"></span>
-                        <img src="`+base_url+'images/'+sender.avatar+`" alt="" />
+                        <img src="`+base_url+'images/'+data.sender_avatar+`" alt="" />
                         <div class="meta">
-                            <p class="name">`+sender.name+`</p>
-                            <p class="preview text-bold">`+data.message+`</p>
+                            <p class="name">`+data.sender_name+`</p>
+                            <p class="preview text-bold">`+data.message_alter+`</p>
                         </div>
                     </div>
-                    <div class="unread-count ">`+data.unseen+`</div>
+                    <div class="unread-count">`+data.unseen+`</div>
                 </li>
             `;
-            $("#room-"+data.id_room).remove();
-            console.log(roomTemplate,$("#contacts ul"));
             $("#contacts .list-unstyled").prepend(roomTemplate);
+    }else if(data.id_sender != myId){
+        
+            
+            room.find('.unread-count').html(data.unseen);
+            room.find('.unread-count').removeClass('d-none');
+            room.find('.preview').html("<b>"+data.sender_name.split(' ').pop()+" : </b>"+ data.message);
+            room.find('unread-count').html(data.unseen);
+
+            var room2 = room.clone();
+            room.remove();
+
+            $("#contacts .list-unstyled").prepend(room2);
     }
         
 }
@@ -281,14 +315,56 @@ function scroll_bottom_chat() {
     $(".content .messages").animate({ scrollTop:$(".content .message-wraper").height() }, 500);
 }
 
-function markSeenMessage() {
+function markSeenMessageEvent() {
     $("#room-"+chatting_room+" .unread-count").addClass('d-none').find('.preview').removeClass('text-bold');
-
     $.get( base_url+"mark_seen_message/"+chatting_room, function( data ) {
         console.log(data);
         $(".content .messages .sent .unseen ").html('seen at '+moment().format('YYYY-MM-DD H:mm:ss'));
     });
 }
+
+
+function markSeenMessageInChat() {
+        $(".content .messages .replies .unseen ").html('seen at '+moment().format('YYYY-MM-DD H:mm:ss'));
+}
 // function timeNow() {
 //     return new Date().toLocaleString().replace('/', '-').replace(',', '');
 // }
+
+function pinMessage(e) {
+    e = $(e);
+    var idMess = e.parent().parent().attr("id-message");
+    console.log(e.parent().parent());
+    var mode = '1'
+    if(e.hasClass('pinned')){
+        mode = '0';
+    }
+
+    if(isViewPinnedMess){
+        e.parent().parent().animate({ 
+            opacity: "0",
+        }, 500 );
+        setTimeout(function () {
+            e.parent().parent().remove();
+
+        },500)
+
+    }
+
+    $.get( base_url+"pin_message/"+mode+'/'+idMess, function( data ) {
+        if((mode) == '1'){
+            e.addClass('pinned');
+        }else{
+            e.removeClass('pinned');
+        }
+    });
+}
+
+
+function getPinnedMessage() {
+    isViewPinnedMess = 1;
+    $.get( base_url+"get_pinned_message/"+chatting_room, function( data ) {
+       $(".message-wraper ul").html(data);
+    });
+
+}

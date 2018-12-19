@@ -6,7 +6,7 @@
                 <img src="{{URL('/images/').'/'.$room->image}}" alt="" />
                 <div class="meta">
                     <p class="name">{{$room->name}}</p>
-                    <p class="preview">{{$room->last_message}}</p>
+                    <p class="preview"><b>{{$room->last_message_sender}} : </b>{{$room->last_message}}</p>
                 </div>
             </div>
             <div class="unread-count {{$room->unread==0?'d-none':''}}">{{$room->unread}}</div>

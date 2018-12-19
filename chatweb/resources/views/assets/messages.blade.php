@@ -12,10 +12,11 @@
 					$time = $status=='sent'?$ms->created_at:$ms->updated_at;
 				}
 			@endphp
-			<li class="{{$isMyMessage?'replies':' sent'}}" id-message="{{$ms->id}}">
+			<li class="{{$isMyMessage?'replies':' sent'}} " id-message="{{$ms->id}}">
 				<img src="{{URL('/images/').'/'.$users[$ms->id_sender.'t']->avatar}}" alt="">
 				<p>{{$ms->message}}</p>
-				<span class="meta-data text-muted">{{$status}} at {{$time}}</span>
+				<span class="meta-data text-muted {{$ms->status == 'sent'?'unseen':''}}">{{$status}} at {{$time}}</span>
+				<span class="function-message"><i title="Ghim tin nhắn này " onclick="pinMessage(this)" class="fa fa-map-marker pin-message {{$ms->pin == 0?'':'pinned'}}" aria-hidden="true"></i></span>
 			</li>
 			{{-- <li class="replies">
 				<img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="">

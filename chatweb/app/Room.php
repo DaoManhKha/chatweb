@@ -19,7 +19,7 @@ class Room extends Model {
 			'id_creater'=>Auth::user()->id,
 			'last_message'=>$roomInfo['message'],
 			'memberids_in_rooms'=>Auth::user()->id.','.$roomInfo['idUser'],
-			'number_user'=>2
+			'number_user'=>2,
 		];
 		
 
@@ -40,7 +40,8 @@ class Room extends Model {
 			'owner_id'=>Auth::user()->id,
 			'name'=>$ob->name,
 			'image'=>$ob->avatar,
-			'last_message'=>$roomInfo['message']
+			'last_message'=>$roomInfo['message'],
+			'last_message_sender'=>Auth::user()->name
 			]);
 
 		showRoom::createShowRoom(
@@ -48,7 +49,8 @@ class Room extends Model {
 				'owner_id'=>$roomInfo['idUser'],
 				'name'=>Auth::user()->name,
 				'image'=>Auth::user()->avatar,
-				'last_message'=>$roomInfo['message']
+				'last_message'=>$roomInfo['message'],
+				'last_message_sender'=>Auth::user()->name
 			]);
 
 		// Cập nhật private room 

@@ -32,7 +32,7 @@ Route::get('/test/{token}', 'HomeController@test');
 
 Route::get('/get_info_room/{id}', 'HomeController@getInfoRoom');
 
-Route::get('/get_list_message_room/{id}/{lastIdMessage}', 'HomeController@getListMessageRoom');
+Route::get('/get_list_message_room/{id}/{lastIdMessage}/{mode}', 'HomeController@getListMessageRoom');
 
 Route::get('/logout', function(){
    Auth::logout();
@@ -40,3 +40,12 @@ Route::get('/logout', function(){
 });
 
 Route::get('/mark_seen_message/{idRoom}', 'HomeController@markSeenMessage');
+Route::get('/get_user_in_room/{idRoom}', 'HomeController@getUserInRoom');
+
+Route::get('/pin_message/{mode}/{id}', 'HomeController@pinMessage');
+
+
+Route::get('/get_pinned_message/{id}', 'HomeController@getPinnedMessage');
+
+
+
