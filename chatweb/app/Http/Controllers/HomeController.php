@@ -131,8 +131,16 @@ class HomeController extends Controller {
 
 	public function test($token)
 	{
-		$nam = explode(' ','Đào Mạnh Khá');
-		return  $last = array_pop($nam);
+		$headers = array('Content-Type:application/json', 'Authorization:key=AIzaSyB-GoXZZvSRgnZ73SQZTIKugJvUxolNnSw');
+
+		$ch = curl_init();			
+		curl_setopt($ch, CURLOPT_URL, "https://iid.googleapis.com/iid/info/".$token."?details=true");
+		curl_setopt($ch, CURLOPT_POST, true);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, array());
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		$result = curl_exec($ch);
+		return $result;
 	}
 
 	public function subscribeTopic($token,$roomId,$type)
@@ -144,12 +152,13 @@ class HomeController extends Controller {
 			$firebaseMessage->registerTopic();
 		}else if($roomId == 'allRoom' && $type == 'allRoom'){
 			$allChattedRoom = DB::table('members_in_rooms')->where('id_member',$currentUserId)->get(['id_room']);
+			var_dump($allChattedRoom);
 			foreach ($allChattedRoom as $room) {
+				sleep(3);
 				if(isset($room->id)){
 					$firebaseMessage = new Firebase($token,$room->id,'room');
 					$firebaseMessage->registerTopic();
 				}
-				
 			}
 		}else{
 			$firebaseMessage = new Firebase($token,$roomId,$type);
@@ -173,7 +182,25 @@ class HomeController extends Controller {
 
 	public function getAllRoom()
 	{
-		$roomData = DB::table('show_room')->where('owner_id',Auth::user()->id)->get();
+		$roomData = DB::table('show_room')->where('owner_id',Auth::user()->id)->get()->toArray();
+
+		$groupId = DB::table('members_in_rooms')->where('id_member',Auth::user()->id)->pluck('id_room');
+		$groups = Room::whereIn('id',$groupId)->where('name','<>','');
+		$groupObjects = $groups->get();
+		$groupId = $groups->pluck('id');
+		foreach ($groupObjects as $g) {
+			$unread = Message::where('id_room',$g->id)->where('status','sent')->count();
+			$arr = [
+				'room_id'=>$g->id,
+				'image'=>$g->picture,
+				'name'=>$g->name,
+				'last_message_sender'=>$g->last_message_sender==0?'':$g->last_message_sender,
+				'last_message'=>$g->last_message,
+				'unread'=>$unread,
+				'type'=>'group'
+			];
+			array_push($roomData,(object) $arr);
+		}
 		return view('assets.list_room',['rooms'=>$roomData]);
 	}
 
@@ -183,9 +210,16 @@ class HomeController extends Controller {
 		return json_encode(User::where('id',$id)->get()->toArray());
 	}
 
-	public function getInfoRoom($id)
+	public function getInfoRoom($id,$type)
 	{
-		return json_encode(DB::table('show_room')->where('room_id',$id)->where('owner_id',Auth::user()->id)->get()->toArray());
+		if($type == 'private'){
+			return json_encode(DB::table('show_room')->where('room_id',$id)->where('owner_id',Auth::user()->id)->get()->toArray());
+		}else{
+			$room = Room::where('id',$id)->get();
+
+			return json_encode($room);
+		}
+		
 	}
 
 	public function getListMessageRoom($id,$lastIdMessage,$mode)
@@ -248,5 +282,24 @@ class HomeController extends Controller {
 				'users'=>$userData,
 				'curId'=>Auth::user()->id,
 			]);
+	}
+
+
+	public function findUserAddGroup(Request $rq)
+	{
+		
+		if($rq->input('users')!= ''){
+			$usr = explode(',', $rq->input('users'));
+			array_push($usr, Auth::user()->id.'');
+			return json_encode(User::whereNotIn('id',$usr)->where('name','like','%'.$rq->input('query').'%')->get());
+		}
+		return json_encode(User::where('id','<>',Auth::user()->id.'')->where('name','like','%'.$rq->input('query').'%')->get());
+	}
+
+
+	public function addGroup(Request $rq)
+	{
+		$newGroupRoom = Room::createGroupRoom($rq->input());
+		return json_encode($newGroupRoom);
 	}
 }

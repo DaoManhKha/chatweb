@@ -419,6 +419,10 @@ body {
 #frame #sidepanel #contacts ul li.contact .wrap .meta .name {
   font-weight: 600;
   margin-bottom: 3px;
+      white-space: nowrap;
+    display: block;
+    text-overflow: ellipsis;
+    max-width: 253px;
 }
 #frame #sidepanel #contacts ul li.contact .wrap .meta .preview {
   margin: 5px 0 0 0;
@@ -734,4 +738,16 @@ body {
 }
 .replies:hover .pin-message{
   display: inline-block!important;
+}
+
+
+.h-45px{
+  font-weight: bold;
+  height: 40px!important;
+}
+
+.option-select-user:hover{
+  background-color: #cadaff;
+  height: 45px!important;
+  cursor: pointer;
 }

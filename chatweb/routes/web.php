@@ -30,7 +30,7 @@ Route::get('/get_info_user/{id}', 'HomeController@getInfoUser');
 Route::get('/test/{token}', 'HomeController@test');
 
 
-Route::get('/get_info_room/{id}', 'HomeController@getInfoRoom');
+Route::get('/get_info_room/{id}/{type}', 'HomeController@getInfoRoom');
 
 Route::get('/get_list_message_room/{id}/{lastIdMessage}/{mode}', 'HomeController@getListMessageRoom');
 
@@ -46,6 +46,13 @@ Route::get('/pin_message/{mode}/{id}', 'HomeController@pinMessage');
 
 
 Route::get('/get_pinned_message/{id}', 'HomeController@getPinnedMessage');
+
+
+Route::post('/find_user_add_group', 'HomeController@findUserAddGroup');
+
+Route::post('/add_group', 'HomeController@addGroup');
+
+
 
 
 

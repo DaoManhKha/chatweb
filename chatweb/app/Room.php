@@ -87,4 +87,40 @@ class Room extends Model {
 		return User::whereIn('id',$idUsers)->get(); 
 	}
 
+
+	public static function createGroupRoom($data)
+	{
+		$userArr = explode(',', $data['users']);
+		$users = User::whereIn('id',$userArr)->get();
+
+		if($data['name'] == ''){
+			$data['name'] = '';
+			foreach ($users as $u) {
+				$data['name'] .= $u->name.',';
+			}
+		}
+		// Room mới
+		$room = new Room;
+		$room->name  = $data['name'];
+		$room->id_creater  = Auth::user()->id;
+		$room->memberids_in_rooms  = $data['users'];
+		$room->number_user  = count($userArr);	
+
+		$room->picture  = $data['picture']==''?'group.png':$data['picture'];		
+		$room->save();
+
+		// member in room
+		$dataInsert = [];
+		foreach ($userArr as $u) {
+			array_push($dataInsert, [
+				'id_member'=>$u,
+				'id_room'=>$room->id]);
+		}
+
+		DB::table('members_in_rooms')->insert($dataInsert);	
+
+
+		return $room;
+	}
+
 }

@@ -6,15 +6,24 @@ var chatting_user_info = {};
 var myId;
 var tempMessageId = 0;
 var isViewPinnedMess = 0;
+var roomType = 'private';
 $(document).ready(function(){
     $("#profile-img").click(function() {
         $("#status-options").toggleClass("active");
     });
     myId = $("#profile").attr('my-id');
 
+
+    $("#addcontact").click();
+
 $(".expand-button").click(function() {
   $("#profile").toggleClass("expanded");
     $("#contacts").toggleClass("expanded");
+});
+
+$(".modal-body").click(function (e) {
+    console.log('hide select',$(".select-user"));
+    $("#select-user").hide();
 });
 	$.ajaxSetup({
     headers: {
@@ -43,6 +52,7 @@ $(".expand-button").click(function() {
         $(".contact").removeClass('active');
         $(this).addClass('active');
 		var selected_user = $(this).attr('id-user');
+        roomType = $(this).attr('room-type');
         if(selected_user){
             chatting_user = selected_user;
             $.get( base_url+"get_info_user/"+chatting_user, function( data ) {
@@ -54,9 +64,15 @@ $(".expand-button").click(function() {
             getListMessage(selected_user);
         }else{
             chatting_room = $(this).attr('id-room');
-             $.get( base_url+"get_info_room/"+chatting_room, function( data ) {
+             $.get( base_url+"get_info_room/"+chatting_room+'/'+roomType, function( data ) {
                 data = JSON.parse(data)[0];
-                $(".content .contact-profile img").attr('src',base_url+'images/'+data.image);
+                var srcImg = '';
+                if(roomType == 'group'){
+                    srcImg = data.picture;
+                }else{
+                    srcImg = data.image;
+                }
+                $(".content .contact-profile img").attr('src',base_url+'images/'+srcImg);
                 $(".content .contact-profile p").html('<b>'+data.name+'</b>');
                 chatting_user_info = data;
             });
@@ -189,7 +205,8 @@ function sendMessage(message) {
 		idUser:chatting_user,
 		token:userToken,
         roomId:chatting_room,
-        tempMessageId:tempMessageId
+        tempMessageId:tempMessageId,
+        type: roomType
 	}
 
     var messTemplate = `<li class="replies" id-message="temp-`+tempMessageId+`" >
@@ -367,4 +384,106 @@ function getPinnedMessage() {
        $(".message-wraper ul").html(data);
     });
 
+}
+
+var membersToAddGroup = [];
+function findUserAddGroup(ele){
+    console.log($(ele));
+    data = {};
+    data.users = membersToAddGroup.toString();
+    data.query = $(ele).val();
+    $.ajax({
+        type: "POST",
+        url: base_url+'find_user_add_group',
+        data: data,
+        dataType: 'text',
+        success: function (data) {
+            data = JSON.parse(data);
+            console.log('user tìm được',data);
+
+            $("#select-user").show();
+            var users = '';
+            for (var i in data) {
+                users +=  `
+                <li onclick="addUserToRoom(this,event)" class="list-group-item p-0 d-flex align-items-center option-select-user h-45px" user-id="`+data[i].id+`">
+                        <img style="width: 30px!important" height="30px" src="`+base_url+`/images/`+data[i].avatar+`" class="m-0 ml-2 mr-2 rounded-circle border border-white d-inline-block" alt="">
+                        <span><b class="name">`+data[i].name+`</b></span>
+                </li>
+            `;
+            }
+            $("#select-user ul").html(users);
+        }
+    });
+}
+
+function addUserToRoom(ele,evt){
+    console.log(ele,evt);
+    evt.stopPropagation();
+    membersToAddGroup.push($(ele).attr('user-id')+'');
+    console.log(membersToAddGroup);
+    $(ele).fadeOut(300);
+    setTimeout(function () {
+        $(ele).remove();
+    },300);
+
+
+    var addedUser = `
+        <span class="badge badge-light mr-2 mb-2" user-id="`+$(ele).attr('user-id')+`">
+            <img style="width: 30px!important" height="30px" src="`+$(ele).find('img').attr('src')+`" class="m-0 ml-2 mr-2 rounded-circle border border-white d-inline-block" alt="">
+            <h6 class="m-0 pt-1 d-inline-block text-bold">`+$(ele).find('.name').html()+` </h6>
+            <h5 class="m-0 d-inline-block">
+            <i onclick="removeAddedUser(this)" class="fa fa-times-circle-o ml-2 pt-1" style="cursor: pointer;" aria-hidden="true" title="bỏ người này"></i></h5>
+        </span>
+    `;
+
+    $(".list-user-add-group").append(addedUser);
+}
+
+
+function removeAddedUser(ele) {
+
+   
+    var index = membersToAddGroup.indexOf($(ele).parent().parent().attr('user-id'));
+    if(index!=-1){
+       membersToAddGroup.splice(index, 1);
+    } 
+
+    $(ele).parent().parent().fadeOut(300);
+    setTimeout(function() {
+       $(ele).parent().parent().remove();
+    },300);
+    
+}
+
+
+function addGroup() {
+    membersToAddGroup.push(myId);
+    var data = {
+        users:membersToAddGroup.toString(),
+        name:$("#group-name").val(),
+        des:$("#describtion-group").val(),
+        picture:$("#picture-group").val()  
+    };
+    $.ajax({
+        type: "POST",
+        url: base_url+'add_group',
+        data: data,
+        dataType: 'text',
+        success: function (data) {
+            data = JSON.parse(data);
+            var roomTemplate = `
+                <li class="contact " id-room="`+data.id+`" id="room-`+data.id+`">
+                    <div class="wrap">
+                        <span class="contact-status online"></span>
+                        <img src="`+base_url+'images/'+data.picture+`" alt="" />
+                        <div class="meta">
+                            <p class="name">`+data.name+`</p>
+                        </div>
+                    </div>
+                    <div class="unread-count d-none"></div>
+                </li>
+            `;
+            $("#contacts .list-unstyled").prepend(roomTemplate);
+        }
+    });
 }
